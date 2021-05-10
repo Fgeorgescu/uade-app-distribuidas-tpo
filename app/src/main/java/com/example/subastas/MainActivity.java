@@ -6,36 +6,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.example.subastas.clients.UserClient;
-import com.example.subastas.dto.users.UserCreationRequest;
-import com.example.subastas.dto.users.UserCredentials;
-import com.example.subastas.dto.users.UserInfo;
-
-import java.io.IOException;
-import java.util.HashMap;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.example.subastas.service.UserService;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
-    private UserClient userClient = new Retrofit.Builder()
-                                    // 10.0.2.2 hace referencia a la computadora donde se ejecuta el emulador, 127.0.0.1 hace referencia al emulador en si
-                                    .baseUrl("http://10.0.2.2:8080")
-                                    .addConverterFactory(GsonConverterFactory.create())
-                                    .build().create(UserClient.class);
+    private UserService userService;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userService = new UserService();
 
     }
 
@@ -46,29 +31,12 @@ public class MainActivity extends AppCompatActivity {
         EditText password = (EditText) findViewById(R.id.login_password_text);
 
 
-        /*
-        Call<String> call = client.ping();
+        userService.login(
+                username.getText().toString(),
+                password.getText().toString()
+        );
 
-        call.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                try {
-                    Log.i(TAG, "Response!!! " + response.errorBody().string());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.e(TAG, "No ping; :( ", t);
-            }
-        });*/
-
-        UserCredentials creads = new UserCredentials(username.getText().toString(),password.getText().toString());
-
-
-        Log.i(TAG, "Credenciales: " +creads.toString());
+        Log.i(TAG, "Credenciales: ");
     }
 
 
@@ -76,18 +44,27 @@ public class MainActivity extends AppCompatActivity {
         EditText username = (EditText) findViewById(R.id.createUser_username_text);
         EditText mail = (EditText) findViewById(R.id.createUser_mail_text);
 
-        Call<UserInfo> call = userClient.createUser(new UserCreationRequest(username.getText().toString(), mail.getText().toString()));
-
-        call.enqueue(new Callback<UserInfo>() {
-            @Override
-            public void onResponse(Call<UserInfo> call, Response<UserInfo> response) {
-                Log.i(TAG, "Usuario creado!!! " + response.body().toString());
-            }
-
-            @Override
-            public void onFailure(Call<UserInfo> call, Throwable t) {
-                Log.e(TAG, "No ping; :( ", t);
-            }
-        });
+        userService.createUser(
+                username.getText().toString(), mail.getText().toString()
+        );
     }
+
+    public void onUpdatePasswordClick(View view) {
+        EditText validationCode = (EditText) findViewById(R.id.updatePassword_code_text);
+        EditText newPassword = (EditText) findViewById(R.id.updatePassword_password_text);
+        EditText validationMail = (EditText) findViewById(R.id.updatePassword_username_text);
+
+        userService.updatePassword(
+                validationMail.getText().toString(),
+                validationCode.getText().toString(),
+                newPassword.getText().toString()
+        );
+    }
+
+    public void ping(View view) {
+        Log.e(TAG, "Executing ping");
+        userService.ping();
+    }
+
+
 }

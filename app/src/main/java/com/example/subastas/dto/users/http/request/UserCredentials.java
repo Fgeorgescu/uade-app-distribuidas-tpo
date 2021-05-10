@@ -1,4 +1,4 @@
-package com.example.subastas.dto.users;
+package com.example.subastas.dto.users.http.request;
 
 public class UserCredentials {
     private String username;
