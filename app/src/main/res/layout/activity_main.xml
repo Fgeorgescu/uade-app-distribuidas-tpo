@@ -15,13 +15,13 @@
         android:ems="10"
         android:hint="Nombre de ususario"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextEmailAddress"
+        app:layout_constraintBottom_toTopOf="@+id/createUser_mail_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextEmailAddress"
+        android:id="@+id/createUser_mail_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -60,6 +60,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
+        android:onClick="onCreateUserClick"
         android:text="Crear usuario"
         app:layout_constraintBottom_toTopOf="@+id/editTextNumberPassword"
         app:layout_constraintEnd_toEndOf="parent"

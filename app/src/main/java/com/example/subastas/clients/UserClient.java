@@ -1,6 +1,8 @@
 package com.example.subastas.clients;
 
+import com.example.subastas.dto.users.UserCreationRequest;
 import com.example.subastas.dto.users.UserCredentials;
+import com.example.subastas.dto.users.UserInfo;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -19,7 +21,7 @@ public interface UserClient {
     Call<String> ping();
 
     @POST(CREATE_USER_URL)
-    Call<Object> createUser(Object user);
+    Call<UserInfo> createUser(@Body UserCreationRequest user);
 
     /**
      * Creamos una nueva sesión para este device.
@@ -27,7 +29,7 @@ public interface UserClient {
      * @return
      */
     @POST(LOGIN_URL)
-    Call<Object> login(@Body UserCredentials userCredentials);
+    Call<UserInfo> login(@Body UserCredentials userCredentials);
 
     /**
      * Eliminamos la sesión
